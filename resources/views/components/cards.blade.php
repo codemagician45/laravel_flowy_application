@@ -1,22 +1,46 @@
 <div class="row">
-    @foreach($datas as $phase)
+    @foreach($datas as $data)
         <div {{ $attributes }}>
-            <a href="{{$phase->route}}" class="text-decoration-none text-body">
+{{--            <a href="{{$data->route}}" class="text-decoration-none text-body">--}}
                 <div class="main-card mb-4 card card-hover-shadow-2x">
                     <div class="row no-gutters overflow-hidden">
                         <div class="col-3 p-4 bg-sunny-morning d-flex align-items-center">
-                            <span class="display-4" style="color: rgba(255,255,255,0.9)">{{ $phase->index }}.</span>
+                            <span class="display-4" style="color: rgba(255,255,255,0.9)">{{ $data->sysnum }}.</span>
                             <div class="card-index__rondje"></div>
                         </div>
-                        <div class="col-9 py-1">
-                            <div class="card-body">
-                                <h5 class="card-title">{{$phase->title}}</h5>
-                                <p class="pt-max mb-0">{{$phase->description}}</p>
-                            </div>
+                        <div class="col-8 py-1">
+                            <a href="{{route('themes',['fase_id' => $data->id])}}" class="text-decoration-none text-body">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{$data->name}}</h5>
+                                    <p class="pt-max mb-0">{{$data->description}}</p>
+                                </div>
+                            </a>
                         </div>
+                        @if($data->user_id)
+                        <div class="col-1">
+                            <a href="{{route('edit_phase',['id' => $data->id])}}">
+                                <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>
+                            </a>
+                            <a href="{{route('delete_phase',['id' => $data->id])}}">
+                                <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>
+                            </a>
+                        </div>
+                        @endif
+
+                        @if($data->fase_id)
+                            <div class="col-1">
+                                <a href="{{route('edit_theme',['id' => $data->id])}}">
+                                    <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>
+                                </a>
+                                <a href="{{route('delete_theme',['id' => $data->id])}}">
+                                    <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>
+                                </a>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
-            </a>
+{{--            </a>--}}
         </div>
     @endforeach
 </div>

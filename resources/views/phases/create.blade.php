@@ -1,9 +1,6 @@
+
 @extends('layouts.main', ['vue' => true])
-
-@section('title', 'Dashboard')
-
 @section('content')
-
     <div class="col-12 px-0">
 
         <div class="row">
@@ -11,26 +8,32 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Systemen</a></li>
                     <li class="breadcrumb-item"><a href="javascript:void(0);">Kwaliteitssysteem van Doorn</a></li>
-                    <li class="active breadcrumb-item" aria-current="page">Data</li>
                 </ol>
             </nav>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary float-right mb-3"><a href="{{route('create_theme',['fase_id' =>$fase_id ])}}" style="color: white;">Create New Theme</a></button>
-            </div>
 
-        </div>
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success">
-                <p>{{ $message }}</p>
-            </div>
-        @endif
         <div class="row">
             <div class="col-9">
+                <div class="card-shadow-alternate card-border mb-3 card p-4">
+                    <h3>Create New Fase</h3>
+                    <form action="{{route('save_phase')}}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea type="text" class="form-control" id="description" name="description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="sysnum">SystemNumber</label>
+                            <input type="number" class="form-control" id="sysnum" name="sysnum">
+                        </div>
+                        <button type="submit" class="btn btn-primary float-right">Save</button>
+                    </form>
 
-                <x-cards :datas="$themes" class="col-12"></x-cards>
-
+                </div>
             </div>
 
             <div class="col-3">
@@ -124,5 +127,4 @@
 
 
     </div>
-
 @endsection

@@ -106,7 +106,7 @@
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">Kwaliteitssystemen</li>
                             <li class="{{ (request()->routeIs('phases')) ? 'mm-active' : '' }}">
-                                <a href="{{ route("phases") }}">
+                                <a href="{{ route('phases') }}">
                                     <i class="metismenu-icon pe-7s-home"></i>Fases
                                 </a>
                                 <ul class="mm-collapse mm-show" style="">
