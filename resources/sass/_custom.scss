@@ -1,0 +1,136 @@
+body {background-color:#f1f4f6;}
+
+.floaty-btn {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 999;
+}
+
+tr[data-href] {
+  color: inherit;
+}
+
+tr[data-href]:hover {
+  cursor: pointer;
+  color: #DF691A;
+}
+
+table td:last-of-type, table th:last-of-type {
+  text-align: right;
+}
+
+.relation-label {
+  background:#DF691A;padding:5px 10px; color:#fff;border-radius:40px;font-size:11px;
+}
+
+.app-theme-white.fixed-header .app-header__logo {background:#fff;}
+.app-header__logo .logo-src {
+  height: 100%;
+  width: 100%;
+  max-width: 80%;
+  background: url("/images/logo-alt.jpg") no-repeat left center;
+  background-size: 100%;
+}
+
+.closed-sidebar.closed-sidebar-mobile .app-sidebar .app-header__logo, .closed-sidebar.closed-sidebar-mobile .app-header .app-header__logo {
+  display: flex;
+  width: 280px;
+  margin: 0 auto;
+}
+
+/** MAP **/
+.map-container {position:absolute; left:0; width: 100%; height: 100vh;top:200px;}
+#map {position: absolute; width: 100%; height: 100vh;}
+.mapboxgl-popup {max-width:340px!important;min-width:340px!important;}
+
+/**CSS POPUP **/
+.popup-content-top {width:100%; overflow:auto; min-height: 70px;font-family:Arial, sans-serif;}
+.top-left {float:left;width: calc(100% - 90px);}
+.top-right {float:left;width:90px; }
+.hmp-bg {background:#118a80; overflow:auto;padding:5px 5px 3px 5px;}
+.hmp-way {width:60%; float:left; background:red; color:#fff; padding:2px 2px 1px 2px; border-radius:5px;text-align:center;font-size:18px; overflow:auto;}
+.hmp-side {width:25%; float: left;    padding: 2px 5px 2px 12px;    color: #fff;    font-size: 18px;    text-align: center;}
+.hmp-nr {width:60%; float:left;padding:2px 5px 2px 2px; color:#fff; font-size:18px;}
+.hmp-xtr {width:25%; float:right;text-align:center;padding-top:2px;padding-right:5px;}
+.hmp-xtr span {color:#000; background:#fcc30f;padding: 0px 6px 2px 6px;font-size:16px; }
+.top-left h3 {margin:5px 0 10px 0;color:#5e2751;font-size: 1.17em;font-weight: bold;word-break: break-word;}
+.top-left p {font-size:14px;color:#000;font-family:Arial, sans-serif;padding-right:10px;}
+.top-left span.top-label {background:#5e2751; color:#fff; text-transform: uppercase; font-size:11px;padding:2px 4px;border-radius:5px;font-weight:600;}
+.popup-content-bottom {font-size:14px;color:#000;font-family:Arial, sans-serif;}
+.popup-content-bottom2 {font-size:12px;color:#5e2751;font-family:Arial, sans-serif;}
+.popup-content-bottom2 a {color:#5e2751;}
+.popup-content-bottom2 a:hover {color:#000;}
+.hmp-img {margin-top:10px;}
+.hmp-img img {width:90px; height:60px;border:1px solid #ccc;object-fit: cover;}
+.maatregel-date {font-size:12px;color:#000;font-family:Arial, sans-serif;}
+
+.mapboxgl-popup-close-button {background-color:#000!important; color:#fff; border-radius:50%!important; padding:0; top:-10px!important; right:-10px!important;width:20px!important;height:20px!important;}
+.mapboxgl-popup-close-button:hover {background-color:#5e2751!important;}
+
+/*Dashboard*/
+.wbr-card-header {text-transform:uppercase;font-weight:bold!important;font-size:14px!important;color: #5e2751;}
+.dash-wdgt1 {min-height:490px;}
+.dash-wdgt1-way {border-bottom: 1px solid rgba(4, 2, 3, 0.125);overflow:auto;padding:15px 0;}
+.dash-wdgt1-way.first {padding-top:0;}
+.dash-wdgt1-way-sign {background:red; color:#fff; padding:2px 3px 1px 3px; width:80px;border-radius:5px;text-align:center;font-size:18px;float:left; margin-top:2px;}
+.dash-wdgt1-way-descr {float:left; width:calc(100% - 80px); padding:0 0 0 20px;font-size:22px; font-weight:bold;}
+
+.dash-wdgt2 {min-height:490px;}
+.dash-wdgt2-dot {border-bottom: 1px solid rgba(4, 2, 3, 0.125);overflow:auto;padding:15px 0;}
+.dash-wdgt2-dot.first {padding-top:0;}
+.dash-wdgt2-dot-circle { text-align:center;float:left; margin-top:2px;}
+.dash-wdgt2-dot-descr {float:left; width:calc(100% - 80px); padding:0 0 0 20px;font-size:22px; font-weight:bold;}
+.dash-wdgt2-type {}
+.dash-wdgt2-type-icon {text-align:center;}
+.dash-wdgt2-type-nmbr {text-align:center;font-size:22px; font-weight:bold;padding-top:10px;}
+.dash-wdgt2-type-text {text-align:center;}
+
+.dash-wdgt3-sync {overflow:auto; padding: 15px 0;}
+.dash-wdgt3-sync.first {padding-top:0;}
+.dash-wdgt3-sync-title {float:left;width:70%;font-size:18px; font-weight:bold;}
+.dash-wdgt3-sync-icon {float:right;width:30%;text-align:right;}
+.dash-wdgt3-sync-icon img {max-width:20px}
+.dash-wdgt3-sync-line {height:1px; width:100%; background-color:rgba(4, 2, 3, 0.125);overflow:auto;}
+.dash-wdgt3-sync-text {float:left;width:50%;}
+.dash-wdgt3-sync-date {float:right;width:50%;text-align:right;}
+
+.dash-wdgt3-alert-icon {float:left; width:70px;}
+.dash-wdgt3-alert-box {float:left;width:calc(100% - 70px);}
+.dash-wdgt3-alert-title {font-size:22px; font-weight:bold;}
+.dash-wdgt3-alert-text {}
+
+.dot-red {height: 25px; width: 25px; background-color: #E74C3C; border-radius: 50%; display: inline-block;}
+.dot-orange {height: 25px; width: 25px; background-color: #F39C12; border-radius: 50%; display: inline-block;}
+.dot-green {height: 25px; width: 25px; background-color: #2ECC71; border-radius: 50%; display: inline-block;}
+.dot-yellow {height: 25px; width: 25px; background-color: #FED330; border-radius: 50%; display: inline-block;}
+
+.dataimport .form-control {height:auto; padding: 20px 20px 20px 20px;margin-bottom: 20px;width: 70%;cursor:pointer;}
+.dataimport .form-checkbox {}
+.dataimport .form-btn {padding-top:20px;}
+.form-notification {margin-bottom: 30px; margin-top: 10px; padding-left: 0px;width: 70%;}
+.map-title {width:calc(100% - 400px); float:left;}
+.map-filters {text-align:center;width:380px;float:left;}
+.map-filters-inner {border:1px solid #ccc;padding:20px;}
+.map-filters-inner .btn-outline-focus.active {color: #fff;border-color: #5e2751;background-color:#5e2751;}
+
+.btn-outline-primary { background-color: rgba(255, 255, 255, .8); }
+
+.card-index__rondje {
+  position: absolute;
+  width: 100%;
+  padding-top: 100%;
+  background-color: white;
+  border-radius: 50%;
+  right: -78%;
+}
+
+// http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
+// https://caniuse.com/#search=line-clamp Supported by 95% of the browsers (same as FlexBox)
+.pt-max {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 3em;
+}
