@@ -20,15 +20,15 @@
                         @csrf
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea type="text" class="form-control" id="description" name="description"></textarea>
+                            <textarea type="text" class="form-control" id="description" name="description" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="sysnum">SystemNumber</label>
-                            <input type="number" class="form-control" id="sysnum" name="sysnum">
+                            <input type="number" class="form-control" id="sysnum" name="sysnum" required>
                         </div>
                         <button type="submit" class="btn btn-primary float-right">Save</button>
                     </form>

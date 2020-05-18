@@ -44,6 +44,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 //    Process Route
     Route::get('fases/{fase_id}/themes/{theme_id}/processes',"ProcessesController@show")->name('processes');
+
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/create',"ProcessesController@create")->name('create_process');
+    Route::post('fases/{fase_id}/themes/{theme_id}/processes/store',"ProcessesController@store")->name('save_process');
+
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/flowchart/show',"ProcessesController@show_flow_chart")->name('process_show_flowchart');
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/flowchart/create',"ProcessesController@create_flow_chart")->name('process_create_flowchart');
+
 //    Route::get('verwervingsfase', "ThemesController@show");
 //    Route::get('transitiefase', "ThemesController@show");
 //    Route::get('onderhoudsfase', "ThemesController@show");

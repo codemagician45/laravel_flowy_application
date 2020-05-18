@@ -109,32 +109,32 @@
                                 <a href="{{ route('phases') }}">
                                     <i class="metismenu-icon pe-7s-home"></i>Fases
                                 </a>
-                                <ul class="mm-collapse mm-show" style="">
-                                    <li>
-                                        <a href="dropdowns.html">
-                                            <i class="metismenu-icon">
-                                            </i>1. Verwervingsfase
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="icons.html">
-                                            <i class="metismenu-icon">
-                                            </i>2. Transitiefase
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="badges-labels.html">
-                                            <i class="metismenu-icon">
-                                            </i>3. Onderhoudsfase
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="cards.html">
-                                            <i class="metismenu-icon">
-                                            </i>4. Overdracht en Nazorg
-                                        </a>
-                                    </li>
-                                </ul>
+{{--                                <ul class="mm-collapse mm-show" style="">--}}
+{{--                                    <li>--}}
+{{--                                        <a href="dropdowns.html">--}}
+{{--                                            <i class="metismenu-icon">--}}
+{{--                                            </i>1. Verwervingsfase--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li>--}}
+{{--                                        <a href="icons.html">--}}
+{{--                                            <i class="metismenu-icon">--}}
+{{--                                            </i>2. Transitiefase--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li>--}}
+{{--                                        <a href="badges-labels.html">--}}
+{{--                                            <i class="metismenu-icon">--}}
+{{--                                            </i>3. Onderhoudsfase--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li>--}}
+{{--                                        <a href="cards.html">--}}
+{{--                                            <i class="metismenu-icon">--}}
+{{--                                            </i>4. Overdracht en Nazorg--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
                             </li>
                         </ul>
                     </div>

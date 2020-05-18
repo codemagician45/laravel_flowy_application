@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-{{--                <button type="submit" class="btn btn-primary float-right mb-3"><a href="{{route('create_theme',['fase_id' =>$fase_id ])}}" style="color: white;">Create New Theme</a></button>--}}
+                <button type="submit" class="btn btn-primary float-right mb-3"><a href="{{route('create_process',['fase_id' =>$fase_id,'theme_id'=>$theme_id ])}}" style="color: white;">Create New Process</a></button>
             </div>
 
         </div>
@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-9">
 
-{{--                <x-cards :datas="$themes" class="col-12"></x-cards>--}}
+                <x-cards :datas="$processes" class="col-12"></x-cards>
 
             </div>
 

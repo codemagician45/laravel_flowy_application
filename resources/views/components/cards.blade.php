@@ -16,8 +16,16 @@
                             </div>
                         </a>
                         @endif
-                        @if($data->fase_id)
+                        @if($data->fase_id && !$data->theme_id)
                             <a href="{{route('processes',['fase_id' => $data->fase_id,'theme_id' => $data->id])}}" class="text-decoration-none text-body">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{$data->name}}</h5>
+                                    <p class="pt-max mb-0">{{$data->description}}</p>
+                                </div>
+                            </a>
+                        @endif
+                        @if($data->theme_id && $data->fase_id)
+                            <a href="{{route('process_show_flowchart',['fase_id' => $data->fase_id,'theme_id' => $data->theme_id,'id'=>$data->id])}}" class="text-decoration-none text-body">
                                 <div class="card-body">
                                     <h5 class="card-title">{{$data->name}}</h5>
                                     <p class="pt-max mb-0">{{$data->description}}</p>
@@ -30,7 +38,7 @@
                         <a href="{{route('edit_phase',['id' => $data->id])}}">
                             <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>
                         </a>
-                        <a href="{{route('delete_phase',['id' => $data->id])}}">
+                        <a href="{{route('delete_phase',['id' => $data->id])}}" onclick="return confirm('Are you sure?')">
                             <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>
                         </a>
                     </div>
@@ -40,11 +48,21 @@
                             <a href="{{route('edit_theme',['fase_id'=>$data->fase_id, 'id' => $data->id])}}">
                                 <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>
                             </a>
-                            <a href="{{route('delete_theme',['fase_id'=>$data->fase_id,'id' => $data->id])}}">
+                            <a href="{{route('delete_theme',['fase_id'=>$data->fase_id,'id' => $data->id])}}" onclick="return confirm('Are you sure?')">
                                 <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>
                             </a>
                         </div>
                     @endif
+{{--                    @if($data->theme_id)--}}
+{{--                        <div class="col-1">--}}
+{{--                            <a href="{{route('edit_theme',['fase_id'=>$data->fase_id, 'id' => $data->id])}}">--}}
+{{--                                <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>--}}
+{{--                            </a>--}}
+{{--                            <a href="{{route('delete_theme',['fase_id'=>$data->fase_id,'id' => $data->id])}}" onclick="return confirm('Are you sure?')">--}}
+{{--                                <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>--}}
+{{--                            </a>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
                 </div>
             </div>
         </div>
