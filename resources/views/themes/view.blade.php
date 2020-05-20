@@ -9,9 +9,8 @@
         <div class="row">
             <nav class="col-12" aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Systemen</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Kwaliteitssysteem van Doorn</a></li>
-                    <li class="active breadcrumb-item" aria-current="page">Data</li>
+                    <li class="breadcrumb-item"><a href="{{route('themes',['fase_id'=>$fase_id])}}">{{$parent_fase->sysnum.'-'.$parent_fase->name}}</a></li>
+                    <li class="active breadcrumb-item" aria-current="page">Themes Overview</li>
                 </ol>
             </nav>
         </div>
@@ -21,11 +20,6 @@
             </div>
 
         </div>
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success">
-                <p>{{ $message }}</p>
-            </div>
-        @endif
         <div class="row">
             <div class="col-9">
 
@@ -121,8 +115,16 @@
                 </div>
             </div>
         </div>
-
-
     </div>
-
+    @if ($message = Session::get('success'))
+        <script>
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: '<?php echo $message;?>',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
+    @endif
 @endsection

@@ -20,6 +20,12 @@ class CreateProcessesTable extends Migration
             $table->unsignedInteger('sysnum');
             $table->unsignedInteger('theme_id');
             $table->unsignedInteger('fase_id');
+            $table->longText('flowchart')->default('');
+//            $table->longText('blocks')->default('');
+            $table->longText('long_des')->default('');
+//            $table->unsignedInteger('assigned_user')->default(0);
+//            $table->string('url')->default('');
+//            $table->unsignedInteger('process')->default(0);
             $table->timestamps();
         });
     }

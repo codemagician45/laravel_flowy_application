@@ -1,11 +1,12 @@
+@extends('layouts.main', ['vue' => true])
 
-@extends('layouts.main',['vue' => true])
-
-@section('title', 'Dashboard')
+@section('title', 'Dashboard',['vue' => true])
 
 @section('content')
     <script src="{{ asset('js/flowy.min.js') }}"></script>
+    <script src="{{ asset('js/flowchart.js') }}"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
     <div class="col-12 px-0">
         <div class="row">
             <nav class="col-12" aria-label="breadcrumb">
@@ -13,16 +14,21 @@
                     <li class="breadcrumb-item"><a href="{{route('themes',['fase_id'=>$fase_id])}}">{{$parent_fase->sysnum.'-'.$parent_fase->name}}</a></li>
                     <li class="breadcrumb-item"><a href="{{route('processes',['fase_id'=>$fase_id,'theme_id'=>$theme_id])}}">{{$parent_fase->sysnum.'.'.$parent_theme->sysnum.'-'.$parent_theme->name}}</a></li>
                     <li class="breadcrumb-item"><a href="{{route('process_show_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}">{{$parent_fase->sysnum.'.'.$parent_theme->sysnum.'.'.$process->sysnum.'-'.$process->name}}</a></li>
-                    <li class="active breadcrumb-item" aria-current="page">show</li>
+                    <li class="active breadcrumb-item" aria-current="page">edit</li>
                 </ol>
             </nav>
         </div>
-
         <div class="row">
             <div class="col-12">
-                <input type="hidden" name="status" id="status" value="show">
-                <button type="click" class="btn btn-primary float-right mb-3"><a href="{{route('process_edit_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" style="color: white;">Edit Process</a></button>
+                <form id="flowchart_save" action="{{route('process_store_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" method="post">
+                    @csrf
+                    <input type="hidden" name="flowchart_data" id="flowchart_data" value="">
+                    <input type="hidden" name="long_des" id="long_des" value="">
+                    <button type="submit" class="btn btn-primary float-right mb-3">Save</button>
+                </form>
+
             </div>
+
         </div>
 
         <div class="row">
@@ -63,7 +69,51 @@
                 </div>
             </div>
 
+            <div id="propwrap">
+                <div id="properties">
+                    <div id="close">
+                        <img src="{{asset('images/close.svg')}}">
+                    </div>
+                    <p id="header2">Properties</p>
+                    <div id="divisionthing"></div>
+
+                        <div class="form-group mr-4 mt-4">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                        <div class="form-group mr-4">
+                            <label for="assigned_user">Assigned User</label>
+                            <select class="form-control" id="assigned_user" name="assigned_user">
+                                <option value="0">None</option>
+                                @foreach($users as $user)
+                                    <option value="{{$user->id}}">{{$user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mr-4">
+                            <label for="description">Description</label>
+                            <textarea type="text" class="form-control" id="description" name="description"></textarea>
+                        </div>
+                        <div class="form-group mr-4">
+                            <label for="url">Url</label>
+                            <input type="text" class="form-control" id="url" name="url">
+                        </div>
+                        <div class="form-group mr-4">
+                            <label for="process">Other Process</label>
+                            <select class="form-control" id="process" name="process">
+                                <option value="0">None</option>
+                                @foreach($processes as $pro)
+                                    <option value="{{$pro->id}}">{{$pro->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button id="flow_property_save" type="button" class="btn btn-success">Save</button>
+{{--                        <button id="flow_property_delete" type="button" class="btn btn-danger">Delete</button>--}}
+{{--                    <div id="removeblock">Delete blocks</div>--}}
+                </div>
+            </div>
         </div>
+
         <div class="row">
             <div class="col-12">
                 <div class="card-shadow-alternate card-border mb-4 card p-4">
@@ -74,7 +124,7 @@
         </div>
     </div>
     <script>
-        var flowyData0,flowyData1, flowyData,delta0,delta1,delta;
+        var flowyData0,flowyData1, flowyData;
         flowyData0 = '<?php echo json_encode($process->flowchart);?>';
         flowyData1 = flowyData0.slice(1, -1);
         if(flowyData1)
@@ -90,50 +140,14 @@
             delta = JSON.parse(delta1);
             quill.setContents(delta);
         }
-        quill.enable(false);
 
-        flowy(document.getElementById("canvas"));
-        var flowyDataJson = $('#flow_import').val();
-        if (flowyDataJson) {
-            var flowyData = JSON.parse(flowyDataJson);
-            flowy.import(flowyData);
-        }
-        $('#canvas').on('mousedown', function (e) {
-            e.preventDefault();
-            return false;
-        })
-        $('#blocklist').on('mousedown', function (e) {
-            e.preventDefault();
-            return false;
-        })
+        $('#flowchart_save').submit(function (e) {
+            $('#flowchart_data').val(JSON.stringify(flowy.output()))
+            var delta = quill.getContents();
+            $('#long_des').val(JSON.stringify(delta));
+        });
 
-        $('.blockelem').click(function () {
-            let selectedUrl = this.children[1].children[0].children[3].value;
-            let selectedProcess = this.children[1].children[0].children[4].value;
-            if(selectedUrl){
-                if(selectedUrl.includes('http'))
-                    window.open(selectedUrl,'_blank');
-                else
-                    window.open('https://'+selectedUrl, '_blank');
-            }
-
-            if(selectedProcess){
-                let currentUrl = window.location.href;
-                window.open(currentUrl.substring(0,currentUrl.indexOf('/show')-1)+selectedProcess+'/show', '_blank');
-            }
-
-        })
 
     </script>
-    @if ($message = Session::get('success'))
-        <script>
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: '<?php echo $message;?>',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        </script>
-    @endif
+
 @endsection

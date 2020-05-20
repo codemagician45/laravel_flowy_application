@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Phases;
 use App\Model\Themes;
 use Illuminate\Http\Request;
 
@@ -10,11 +11,13 @@ class ThemesController extends Controller
     public function show($fase_id)
     {
         $themes = Themes::where('fase_id',$fase_id)->get();
-        return view('themes.view', compact(['themes','fase_id']));
+        $parent_fase = Phases::find($fase_id);
+        return view('themes.view', compact(['themes','fase_id','parent_fase']));
     }
     public function create($fase_id)
     {
-        return view('themes.create', compact('fase_id'));
+        $parent_fase = Phases::find($fase_id);
+        return view('themes.create', compact(['fase_id','parent_fase']));
     }
 
     public function store(Request $request,$fase_id)
@@ -36,7 +39,8 @@ class ThemesController extends Controller
     public function edit($fase_id,$id)
     {
         $theme = Themes::find($id);
-        return view('themes.edit',compact('theme'));
+        $parent_fase = Phases::find($fase_id);
+        return view('themes.edit',compact(['theme','parent_fase','fase_id']));
     }
     public function update($fase_id,$id,Request $request)
     {

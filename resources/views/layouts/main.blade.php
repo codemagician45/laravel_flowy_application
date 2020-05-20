@@ -12,11 +12,21 @@
         <meta name="msapplication-tap-highlight" content="no">
 
         <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+{{--        <script src="sweetalert2.min.js"></script>--}}
         <script src="{{ asset('js/app.js') }}?v={{Cache::get('JsCssVersion', '1')}}" defer></script>
+
+
         @if($vue ?? false) <script src="{{ asset('js/vue.js') }}?v={{Cache::get('JsCssVersion', '1')}}" defer></script> @endif
 
         <!-- CSS -->
         <link href="{{ asset('css/base.css') }}?v={{Cache::get('JsCssVersion', '1')}}" rel="stylesheet">
+        <link href="{{ asset('css/flowy.min.css') }}" rel='stylesheet' type='text/css'>
+        <link href="{{ asset('css/flowchart.css') }}" rel='stylesheet' type='text/css'>
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+{{--        <link rel="stylesheet" href="sweetalert2.min.css">--}}
 
     </head>
     <body>
@@ -148,6 +158,7 @@
             </div>
 
         </div>
+
         @stack('scripts')
     </body>
 </html>

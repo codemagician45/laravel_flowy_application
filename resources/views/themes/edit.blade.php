@@ -6,8 +6,8 @@
         <div class="row">
             <nav class="col-12" aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Systemen</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">Kwaliteitssysteem van Doorn</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('themes',['fase_id'=>$fase_id])}}">{{$parent_fase->sysnum.'-'.$parent_fase->name}}</a></li>
+                    <li class="active breadcrumb-item" aria-current="page">Edit Theme</li>
                 </ol>
             </nav>
         </div>
@@ -124,7 +124,5 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 @endsection

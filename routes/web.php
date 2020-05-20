@@ -48,13 +48,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('fases/{fase_id}/themes/{theme_id}/processes/create',"ProcessesController@create")->name('create_process');
     Route::post('fases/{fase_id}/themes/{theme_id}/processes/store',"ProcessesController@store")->name('save_process');
 
-    Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/flowchart/show',"ProcessesController@show_flow_chart")->name('process_show_flowchart');
-    Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/flowchart/create',"ProcessesController@create_flow_chart")->name('process_create_flowchart');
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/show',"ProcessesController@show_flow_chart")->name('process_show_flowchart');
+    Route::post('fases/{fase_id}/themes/{theme_id}/processes/{id}/store',"ProcessesController@store_flow_chart")->name('process_store_flowchart');
 
-//    Route::get('verwervingsfase', "ThemesController@show");
-//    Route::get('transitiefase', "ThemesController@show");
-//    Route::get('onderhoudsfase', "ThemesController@show");
-//    Route::get('overdrachtennazorg', "ThemesController@show");
-
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/edit',"ProcessesController@edit_flow_chart")->name('process_edit_flowchart');
+    Route::post('fases/{fase_id}/themes/{theme_id}/processes/{id}/update',"ProcessesController@update_flow_chart")->name('process_update_flowchart');
 });
 
