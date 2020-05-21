@@ -21,7 +21,8 @@ class CreateProcessesTable extends Migration
             $table->unsignedInteger('theme_id');
             $table->unsignedInteger('fase_id');
             $table->longText('flowchart')->default('');
-//            $table->longText('blocks')->default('');
+            $table->longText('block_data')->default('');
+            $table->string('role_data')->default('');
             $table->longText('long_des')->default('');
 //            $table->unsignedInteger('assigned_user')->default(0);
 //            $table->string('url')->default('');

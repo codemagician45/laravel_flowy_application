@@ -4,9 +4,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-
     <div class="col-12 px-0">
-
         <div class="row">
             <nav class="col-12" aria-label="breadcrumb">
                 <ol class="breadcrumb">

@@ -7,7 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{{config("app.name")}} - @yield('title') </title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
-
+        <meta name="_token" content="{{csrf_token()}}" />
         <!-- Disable tap highlight on IE -->
         <meta name="msapplication-tap-highlight" content="no">
 
@@ -118,6 +118,9 @@
                             <li class="{{ (request()->routeIs('phases')) ? 'mm-active' : '' }}">
                                 <a href="{{ route('phases') }}">
                                     <i class="metismenu-icon pe-7s-home"></i>Fases
+                                </a>
+                                <a href="{{ route('dashboard') }}">
+                                    <i class="metismenu-icon pe-7s-drawer"></i>Dashboard
                                 </a>
 {{--                                <ul class="mm-collapse mm-show" style="">--}}
 {{--                                    <li>--}}

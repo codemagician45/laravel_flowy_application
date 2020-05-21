@@ -24,6 +24,9 @@
                     @csrf
                     <input type="hidden" name="flowchart_data" id="flowchart_data" value="">
                     <input type="hidden" name="long_des" id="long_des" value="">
+                    <input type="hidden" name="block_data" id="block_data" value="">
+                    <input type="hidden" name="role_data" id="role_data" value="">
+                    <button type="button" class="btn btn-danger float-right ml-2" id="clearblock">Clear</button>
                     <button type="submit" class="btn btn-primary float-right mb-3">Save</button>
                 </form>
 
@@ -46,6 +49,7 @@
                                     <input type="hidden" class="assigned_user" value="">
                                     <input type="hidden" class="url" value="">
                                     <input type="hidden" class="process" value="">
+                                    <input type="hidden" class="role" value="">
                                 </div>
                             </div>
                         </div>
@@ -58,6 +62,7 @@
                                     <input type="hidden" class="assigned_user" value="">
                                     <input type="hidden" class="url" value="">
                                     <input type="hidden" class="process" value="">
+                                    <input type="hidden" class="role" value="">
                                 </div>
                             </div>
                         </div>
@@ -90,6 +95,7 @@
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="form-group mr-4">
                             <label for="description">Description</label>
                             <textarea type="text" class="form-control" id="description" name="description"></textarea>
@@ -107,9 +113,16 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group mr-4">
+                            <label for="role">Role</label>
+                            <select class="form-control" id="role" name="role">
+                                <option value="0">None</option>
+                                @foreach($roles as $role)
+                                    <option value="{{$role->id}}">{{$role->role_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <button id="flow_property_save" type="button" class="btn btn-success">Save</button>
-{{--                        <button id="flow_property_delete" type="button" class="btn btn-danger">Delete</button>--}}
-{{--                    <div id="removeblock">Delete blocks</div>--}}
                 </div>
             </div>
         </div>
@@ -129,6 +142,7 @@
         flowyData1 = flowyData0.slice(1, -1);
         if(flowyData1)
             flowyData = JSON.parse(flowyData1);
+        console.log(flowyData)
         $('#flow_import').val(flowyData1);
 
         var quill = new Quill('#editor', {
@@ -142,10 +156,37 @@
         }
 
         $('#flowchart_save').submit(function (e) {
+            // e.preventDefault();
             $('#flowchart_data').val(JSON.stringify(flowy.output()))
             var delta = quill.getContents();
             $('#long_des').val(JSON.stringify(delta));
+
+            var nameElements  = $('#canvas').find('.blocktitle')
+            var nameArr = [];
+            for(let i=0; i<nameElements.length;i++){
+                nameArr.push(nameElements[i].textContent);
+            }
+            var desElements = $('#canvas').find('.blockdesc');
+            var desArr = [];
+            for(let j=0;j<desElements.length;j++) {
+                desArr.push(desElements[j].textContent)
+            }
+            var blockData = {
+                'name':nameArr,
+                'des': desArr
+            }
+            $('#block_data').val(JSON.stringify(blockData))
+
+            var roleElements = $('#canvas').find('.role');
+            var roleArr = [];
+            for(let k=0; k<roleElements.length;k++){
+                if(roleElements[k].value != 0 && roleElements[k].value != '')
+                    roleArr.push(roleElements[k].value);
+            }
+            $('#role_data').val(JSON.stringify(roleArr));
+            // console.log($('#role_data').val())
         });
+
 
 
     </script>

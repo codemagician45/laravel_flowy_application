@@ -45,14 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 tempblock.classList.remove("selectedblock");
             }
         });
-        // document.getElementById("removeblock").addEventListener("click", function () {
-        //     flowy.deleteBlocks();
-        // });
+        document.getElementById("clearblock").addEventListener("click", function () {
+            flowy.deleteBlocks();
+        });
     }
 
     var aclick = false;
     var noinfo = false;
-    var title, des, user, url, process;
+    var title, des, user, url, process, role;
     var beginTouch = function (event) {
         aclick = true;
         noinfo = false;
@@ -72,11 +72,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 user = tempblock.children[1].children[0].children[2].value;
                 url = tempblock.children[1].children[0].children[3].value;
                 process = tempblock.children[1].children[0].children[4].value;
+                role = tempblock.children[1].children[0].children[5].value;
                 $('#name').val(title);
                 $('#description').val(des);
                 $('#assigned_user').val(user);
                 $('#url').val(url);
                 $('#process').val(process);
+                $('#role').val(role);
                 rightcard = true;
                 if (status != 'show') {
                     document.getElementById("properties").classList.add("expanded");
@@ -99,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var assignedUser = $('#assigned_user').val();
         var editUrl = $('#url').val();
         var editProcess = $('#process').val();
-
+        var editRole = $('#role').val();
         selectedBlock = document.getElementsByClassName('selectedblock')[0];
         selectedBlock.children[1].children[0].children[0].textContent = name;
         selectedBlock.children[1].children[0].children[1].textContent = description;
@@ -112,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedBlock.children[1].children[0].children[3].value = '';
             selectedBlock.children[1].children[0].children[4].value = editProcess;
         }
-
+        selectedBlock.children[1].children[0].children[5].value = editRole;
         if (rightcard) {
             rightcard = false;
             document.getElementById("properties").classList.remove("expanded");

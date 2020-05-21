@@ -6,6 +6,9 @@
 @section('content')
     <script src="{{ asset('js/flowy.min.js') }}"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    @foreach($role_arr as $role)
+        {{$role}}
+    @endforeach
     <div class="col-12 px-0">
         <div class="row">
             <nav class="col-12" aria-label="breadcrumb">
@@ -59,7 +62,19 @@
                 </div>
             </div>
             <div class="col-9" >
+                <div class="role-panel form-group">
+
+                    @foreach($role_arr as $role)
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input role-select" id="{{$role->role_name}}">
+                            <input type="hidden" id="role-id" value="{{$role->id}}">
+                            <input type="hidden" id="role-color" value="{{$role->color}}">
+                            <label class="custom-control-label" for="{{$role->role_name}}">{{$role->role_name}}</label>
+                        </div>
+                    @endforeach
+                </div>
                 <div id="canvas" style="background: white;">
+
                 </div>
             </div>
 
@@ -96,6 +111,7 @@
         var flowyDataJson = $('#flow_import').val();
         if (flowyDataJson) {
             var flowyData = JSON.parse(flowyDataJson);
+
             flowy.import(flowyData);
         }
         $('#canvas').on('mousedown', function (e) {
@@ -122,6 +138,15 @@
                 window.open(currentUrl.substring(0,currentUrl.indexOf('/show')-1)+selectedProcess+'/show', '_blank');
             }
 
+        })
+
+        var roleId, roleColor;
+        $('.role-select').change(function () {
+            if($(this).prop('checked')) {
+                roleId = this.parentNode.children[1].value;
+                roleColor = this.parentNode.children[2].value;
+                console.log(roleId,roleColor)
+            }
         })
 
     </script>
