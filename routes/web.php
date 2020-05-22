@@ -56,6 +56,6 @@ Route::group(['middleware' => 'auth'], function () {
 //    Route::post('fases/{fase_id}/themes/{theme_id}/processes/{id}/update',"ProcessesController@update_flow_chart")->name('process_update_flowchart');
 
     Route::get('/',"ProcessesController@dashboard")->name('dashboard');
-    Route::post('/search','ProcessesController@search')->name('search');
+    Route::post('/search','ProcessesController@search')->name('search-process');
 });
 

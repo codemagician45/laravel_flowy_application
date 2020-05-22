@@ -19,6 +19,7 @@ class CreateThemesTable extends Migration
             $table->string('description');
             $table->unsignedInteger('sysnum');
             $table->unsignedInteger('fase_id');
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

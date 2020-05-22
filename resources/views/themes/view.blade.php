@@ -16,7 +16,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-primary float-right mb-3"><a href="{{route('create_theme',['fase_id' =>$fase_id ])}}" style="color: white;">Create New Theme</a></button>
+                <button type="submit" class="btn btn-primary float-right mb-3"><a href="{{route('create_theme',['fase_id' =>$fase_id ])}}" class="top-right-btn">Create New Theme</a></button>
             </div>
 
         </div>

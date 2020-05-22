@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <button type="submit" class="btn btn-primary float-right mb-3"><a href="{{route('create_phase')}}" style="color: white;">Create New Fase</a></button>
+                <button type="submit" class="btn btn-primary float-right mb-3"><a href="{{route('create_phase')}}" class="top-right-btn">Create New Fase</a></button>
             </div>
 
         </div>

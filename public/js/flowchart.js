@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.type === "mouseup" && aclick && !noinfo) {
             if (!rightcard && event.target.closest(".block") && !event.target.closest(".block").classList.contains("dragging")) {
                 tempblock = event.target.closest(".block");
+                console.log(tempblock.clientHeight)
                 title = tempblock.children[1].children[0].children[0].textContent;
                 des = tempblock.children[1].children[0].children[1].textContent;
                 user = tempblock.children[1].children[0].children[2].value;
@@ -139,8 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if ($(this).val)
             $('#url').val('')
     })
-
-
 });
 
 

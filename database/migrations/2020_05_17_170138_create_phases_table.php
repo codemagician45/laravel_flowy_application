@@ -19,6 +19,7 @@ class CreatePhasesTable extends Migration
             $table->string('description');
             $table->unsignedInteger('sysnum');
             $table->unsignedInteger('user_id');
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

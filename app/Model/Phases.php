@@ -8,6 +8,6 @@ class Phases extends Model
 {
     //
     protected $fillable=[
-        'name','description','sysnum','user_id'
+        'name','description','sysnum','user_id','acive'
     ];
 }

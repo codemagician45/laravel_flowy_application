@@ -6,9 +6,7 @@
 @section('content')
     <script src="{{ asset('js/flowy.min.js') }}"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    @foreach($role_arr as $role)
-        {{$role}}
-    @endforeach
+
     <div class="col-12 px-0">
         <div class="row">
             <nav class="col-12" aria-label="breadcrumb">
@@ -24,7 +22,7 @@
         <div class="row">
             <div class="col-12">
                 <input type="hidden" name="status" id="status" value="show">
-                <button type="click" class="btn btn-primary float-right mb-3"><a href="{{route('process_edit_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" style="color: white;">Edit Process</a></button>
+                <button type="click" class="btn btn-primary float-right mb-3 "><a href="{{route('process_edit_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" class="top-right-btn">Edit Process</a></button>
             </div>
         </div>
 
@@ -32,7 +30,7 @@
             <input type="hidden" id="flow_import" name="flow_import" value="">
             <div class="col-3">
                 <div class="card-shadow-alternate card-border mb-3 card p-2">
-                    <p id="header">Blocks</p>
+                    <p class="header">Blocks</p>
                     <div id="blocklist">
                         <div class="blockelem create-flowy noselect">
                             <input type="hidden" name="blockelemtype" class="blockelemtype" value="1">
@@ -63,7 +61,7 @@
             </div>
             <div class="col-9" >
                 <div class="role-panel form-group">
-
+                    <p class="process-role-block">Process Roles</p>
                     @foreach($role_arr as $role)
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input role-select" id="{{$role->role_name}}">
@@ -82,8 +80,17 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-shadow-alternate card-border mb-4 card p-4">
+                    <p class="header">Process Editor</p>
                     <div id="editor">
                     </div>
+                    <div class="log">
+                        <ul>
+                            <li><span style="font-weight: bold">User :</span> {{$user_make_changed->name}}</li>
+                            <li><span style="font-weight: bold">Commit :</span> {{$process->commit}}</li>
+                            <li><span style="font-weight: bold">Last Update :</span> {{$process->updated_at->format('d-m-Y H:i')}}</li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -140,12 +147,26 @@
 
         })
 
-        var roleId, roleColor;
+        var roleId, roleColor,thisRole, thisColor;
+        var blocks = $('#canvas').find('.blockelem');
         $('.role-select').change(function () {
             if($(this).prop('checked')) {
                 roleId = this.parentNode.children[1].value;
                 roleColor = this.parentNode.children[2].value;
-                console.log(roleId,roleColor)
+                for(let i=0; i<blocks.length;i++){
+                    thisRole = blocks[i].children[1].children[0].children[5].value;
+                    if(thisRole == roleId)
+                        blocks[i].style.background = roleColor
+                }
+            }
+            else{
+                roleId = this.parentNode.children[1].value;
+                roleColor = this.parentNode.children[2].value;
+                for(let i=0; i<blocks.length;i++){
+                    thisRole = blocks[i].children[1].children[0].children[5].value;
+                    if(thisRole == roleId)
+                        blocks[i].style.background = ''
+                }
             }
         })
 

@@ -20,12 +20,13 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <form id="flowchart_save" action="{{route('process_store_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" method="post">
+                <form id="process_update" action="{{route('process_store_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" method="post">
                     @csrf
                     <input type="hidden" name="flowchart_data" id="flowchart_data" value="">
                     <input type="hidden" name="long_des" id="long_des" value="">
                     <input type="hidden" name="block_data" id="block_data" value="">
                     <input type="hidden" name="role_data" id="role_data" value="">
+                    <input type="hidden" name="change-commit" id="change-commit" value="">
                     <button type="button" class="btn btn-danger float-right ml-2" id="clearblock">Clear</button>
                     <button type="submit" class="btn btn-primary float-right mb-3">Save</button>
                 </form>
@@ -38,7 +39,7 @@
             <input type="hidden" id="flow_import" name="flow_import" value="">
             <div class="col-3">
                 <div class="card-shadow-alternate card-border mb-3 card p-2">
-                    <p id="header">Blocks</p>
+                    <p class="header">Blocks</p>
                     <div id="blocklist">
                         <div class="blockelem create-flowy noselect">
                             <input type="hidden" name="blockelemtype" class="blockelemtype" value="1">
@@ -130,19 +131,31 @@
         <div class="row">
             <div class="col-12">
                 <div class="card-shadow-alternate card-border mb-4 card p-4">
+                    <p class="header">Process Edior</p>
                     <div id="editor">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="hover_bkgr_fricc">
+        <span class="helper"></span>
+        <div>
+            <div class="popupCloseButton">&times;</div>
+            <div class="form-group">
+                <label for="change-commit-des">Change Commit</label>
+                <textarea type="text" class="form-control" id="change-commit-des" name="change-commit-des"></textarea>
+            </div>
+            <button type="button" class="btn btn-success float-right" id="commit" name="commit">Commit</button>
+        </div>
+    </div>
+
     <script>
         var flowyData0,flowyData1, flowyData;
         flowyData0 = '<?php echo json_encode($process->flowchart);?>';
         flowyData1 = flowyData0.slice(1, -1);
         if(flowyData1)
             flowyData = JSON.parse(flowyData1);
-        console.log(flowyData)
         $('#flow_import').val(flowyData1);
 
         var quill = new Quill('#editor', {
@@ -155,8 +168,8 @@
             quill.setContents(delta);
         }
 
-        $('#flowchart_save').submit(function (e) {
-            // e.preventDefault();
+        $('#process_update').submit(function (e) {
+            e.preventDefault();
             $('#flowchart_data').val(JSON.stringify(flowy.output()))
             var delta = quill.getContents();
             $('#long_des').val(JSON.stringify(delta));
@@ -180,15 +193,22 @@
             var roleElements = $('#canvas').find('.role');
             var roleArr = [];
             for(let k=0; k<roleElements.length;k++){
-                if(roleElements[k].value != 0 && roleElements[k].value != '')
+                if(roleElements[k].value != 0 && roleElements[k].value != '' && !roleArr.includes(roleElements[k].value))
                     roleArr.push(roleElements[k].value);
             }
             $('#role_data').val(JSON.stringify(roleArr));
-            // console.log($('#role_data').val())
+
+            //commit
+            $('.hover_bkgr_fricc').show();
+
+            $('.popupCloseButton').click(function(){
+                $('.hover_bkgr_fricc').hide();
+            });
         });
-
-
-
+        $('#commit').click(function () {
+            $('#change-commit').val($('#change-commit-des').val());
+            $("#process_update")[0].submit();
+        })
     </script>
 
 @endsection

@@ -12,9 +12,10 @@
             </ol>
         </nav>
     </div>
+
     <div class="row">
         <div class="col-12">
-            <h4>Recent Activated Processors</h4>
+            <p class="header">Recent Activated Processors</p>
         </div>
     </div>
     <div class="row">
@@ -112,45 +113,55 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <h4>Process Search</h4>
+            <p class="header">Process Search</p>
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="search-result">
         <div class="col-12">
-            <form class="form-inline md-form mr-auto mb-4" id="search_process">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" style="width: 90%;" id="search_text">
-                <button class="btn btn-success btn-rounded btn-sm my-0" style="width: 8%" type="submit">Search</button>
+            <form class="form-inline md-form mr-auto mb-4" id="search_process" action="{{route('search-process')}}" method="post">
+                @csrf
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search" style="width: 90%;margin:auto" name="search_text" id="search_text">
+{{--                <button class="btn btn-success btn-rounded btn-sm my-0" style="width: 8%" type="submit">Search</button>--}}
             </form>
-        </div>
-        <div class="col-12" id="search-result">
-            <h5>Result</h5>
-
         </div>
     </div>
 
 </div>
 
 <script>
-
-    $('#search_process').submit(function(e){
-        e.preventDefault();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type:'POST',
-            url:'/search',
-            data: {
-                searchText:$('#search_text').val()
-            },
-            success:function (data) {
-                console.log(data);
-                console.log(Object.assign({}, data));
-
-            }
-        });
+    $('#search_text').keyup(function () {
+        var search_text = $(this).val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type:'POST',
+                url:'/search',
+                data: {
+                    search_text:search_text
+                },
+                success:function (data) {
+                    console.log(data);
+                    document.querySelectorAll('.process-search').forEach(function(a){
+                        a.remove()
+                    })
+                    for(let i = 0; i < 5; i++){
+                        let url = window.location.href+'fases/'+data[i].fase_id+'/themes/'+data[i].theme_id+'/processes/'+data[i].id+'/show';
+                        let year = data[i].updated_at.slice(0,4);
+                        let month = data[i].updated_at.slice(5,7);
+                        let day = data[i].updated_at.slice(8,10);
+                        let hour = data[i].updated_at.slice(11,13);
+                        let min = data[i].updated_at.slice(14, 16);
+                        let date = day+'-'+month+'-'+year+' '+hour+':'+min;
+                        $('#search-result').append(
+                            '<div class="col-12 process-search"><div class="main-card mb-4 card card-hover-shadow-2x"><div class="row no-gutters overflow-hidden"><div class="col-3 p-4 bg-sunny-morning d-flex align-items-center"> <span class="display-4" style="color: rgba(255,255,255,0.9)">'+ data[i].sysnum +'.</span><div class="card-index__rondje"></div></div><div class="col-9 py-1"><a href="'+url+'" class="text-decoration-none text-body"><div class="card-body"><h5 class="card-title">'+data[i].name+'</h5><p class="pt-max mb-0">'+data[i].description+'</p><p class="pt-max mt-2 float-right">Last updated: '+date+'</p></div></div></div></div></div>'
+                        )
+                    }
+                }
+            });
     })
+
 </script>
 @endsection

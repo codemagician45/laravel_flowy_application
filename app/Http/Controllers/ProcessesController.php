@@ -15,7 +15,6 @@ class ProcessesController extends Controller
         $parent_fase = Phases::find($fase_id);
         $parent_theme = Themes::find($theme_id);
         $processes = Processes::where('theme_id',$theme_id)->get();
-//        dd($processes);
         return view('processes.view', compact(['processes','fase_id','theme_id','parent_fase','parent_theme']));
     }
 
@@ -48,12 +47,14 @@ class ProcessesController extends Controller
         $process = Processes::find($id);
         $parent_fase = Phases::find($fase_id);
         $parent_theme = Themes::find($theme_id);
+        $user_make_changed = User::find($process->user_make_changed);
         $role_data = json_decode($process->role_data);
         $role_arr = [];
-        foreach ($role_data as $role){
-            array_push($role_arr,Roles::find($role));
-        }
-        return view('processes.flowchart_show',compact(['fase_id','theme_id','id','process','parent_fase','parent_theme','role_arr']));
+        if($role_data != '')
+            foreach ($role_data as $role){
+                array_push($role_arr,Roles::find($role));
+            }
+        return view('processes.flowchart_show',compact(['fase_id','theme_id','id','process','parent_fase','parent_theme','role_arr','user_make_changed']));
     }
 
     public function update_process($fase_id,$theme_id,$id, Request $request)
@@ -63,8 +64,8 @@ class ProcessesController extends Controller
         $process->long_des = $request->get('long_des');
         $process->block_data = $request->get('block_data');
         $process->role_data = $request->get('role_data');
-//        if($process->flowchart == null) $process->flowchart = '';
-//        if($process->long_des == null) $process->long_des = '';
+        $process->commit = $request->get('change-commit');
+        $process->user_make_changed = auth()->user()->id;
         $process->save();
 
         return redirect()->route('process_show_flowchart',compact(['fase_id','theme_id','id']))->with('success', 'Process updated successfully.');
@@ -83,46 +84,36 @@ class ProcessesController extends Controller
 
     public function dashboard(){
 
-        $processes = Processes::orderBy('updated_at','desc')->get();
-        $recent_processes = [];
-        $count = $processes->count();
-        if($count <= 3)
-        {
-            $recent_processes = $processes;
-        }
-        else{
-
-            for($i=0; $i<3; $i++)
-                array_push($recent_processes,$processes[$i]);
-        }
-//        dd($recent_processes);
+        $recent_processes = Processes::orderBy('updated_at','desc')->limit(3)->get();
         return view('dashboard.view',compact(['recent_processes']));
     }
 
     public function search(Request $request){
 
-        $text = $request->get('searchText');
+        $text = $request->get('search_text');
         $processes = Processes::all();
         $searched_pro_ids = [];
-        foreach ($processes as $process)
-        {
-            $process_block = json_decode($process->block_data);
-            if($process_block != ''){
-                $block_count = count($process_block->name);
-                $search_result = false;
-                for($i = 0; $i < $block_count; $i++)
-                {
-                    if(strpos(strtolower($process_block->name[$i]), strtolower($text)) !== false || strpos(strtolower($process_block->des[$i]), strtolower($text)) !== false){
-                        $search_result = true;
-                        break;
+        if($text)
+            foreach ($processes as $process)
+            {
+                $process_block = json_decode($process->block_data);
+                if($process_block != ''){
+                    $block_count = count($process_block->name);
+                    $search_result = false;
+                    for($i = 0; $i < $block_count; $i++)
+                    {
+                        if(strpos(strtolower($process_block->name[$i]), strtolower($text)) !== false || strpos(strtolower($process_block->des[$i]), strtolower($text)) !== false){
+                            $search_result = true;
+                            break;
+                        }
                     }
+                    if($search_result == true)
+                        array_push($searched_pro_ids,$process->id);
                 }
-                if($search_result == true)
-                    array_push($searched_pro_ids,$process->id);
             }
-        }
         $searched_process_arr = Processes::whereIn('id',$searched_pro_ids)->get();
-//        dd(gettype($searched_process_arr));
         return response()->json($searched_process_arr);
+//        $recent_processes = Processes::orderBy('updated_at','desc')->limit(3)->get();
+//        return view('dashboard.view',compact(['recent_processes','searched_process_arr']));
     }
 }

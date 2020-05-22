@@ -8,6 +8,7 @@
                         <div class="card-index__rondje"></div>
                     </div>
                     <div class="col-8 py-1">
+                        {{--Fase--}}
                         @if($data->user_id)
                         <a href="{{route('themes',['fase_id' => $data->id])}}" class="text-decoration-none text-body">
                             <div class="card-body">
@@ -16,6 +17,7 @@
                             </div>
                         </a>
                         @endif
+                        {{--Theme--}}
                         @if($data->fase_id && !$data->theme_id)
                             <a href="{{route('processes',['fase_id' => $data->fase_id,'theme_id' => $data->id])}}" class="text-decoration-none text-body">
                                 <div class="card-body">
@@ -24,15 +26,18 @@
                                 </div>
                             </a>
                         @endif
+                        {{--Process--}}
                         @if($data->theme_id && $data->fase_id)
                             <a href="{{route('process_show_flowchart',['fase_id' => $data->fase_id,'theme_id' => $data->theme_id,'id'=>$data->id])}}" class="text-decoration-none text-body">
                                 <div class="card-body">
                                     <h5 class="card-title">{{$data->name}}</h5>
                                     <p class="pt-max mb-0">{{$data->description}}</p>
+                                    <p class="pt-max mt-2 float-right">Last updated: {{$data->updated_at->format('d-m-Y H:i')}}</p>
                                 </div>
                             </a>
                         @endif
                     </div>
+                    {{--Fase Edit/Delete--}}
                     @if($data->user_id)
                     <div class="col-1">
                         <a href="{{route('edit_phase',['id' => $data->id])}}">
@@ -43,6 +48,7 @@
                         </a>
                     </div>
                     @endif
+                    {{--Theme Edit/Delete--}}
                     @if($data->fase_id && !$data->theme_id)
                         <div class="col-1">
                             <a href="{{route('edit_theme',['fase_id'=>$data->fase_id, 'id' => $data->id])}}">
@@ -53,6 +59,7 @@
                             </a>
                         </div>
                     @endif
+
                 </div>
             </div>
         </div>
