@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProcessExport;
 use App\Model\Phases;
 use App\Model\Processes;
 use App\Model\Roles;
 use App\Model\Themes;
 use App\User;
+use function Clue\StreamFilter\fun;
 use Illuminate\Http\Request;
+use Excel;
+use Symfony\Component\Process\Process;
 
 class ProcessesController extends Controller
 {
     public function show($fase_id,$theme_id){
         $parent_fase = Phases::find($fase_id);
         $parent_theme = Themes::find($theme_id);
-        $processes = Processes::where('theme_id',$theme_id)->get();
+        $processes = Processes::where('theme_id',$theme_id)->where('active',1)->get();
         return view('processes.view', compact(['processes','fase_id','theme_id','parent_fase','parent_theme']));
     }
 
@@ -38,12 +42,16 @@ class ProcessesController extends Controller
             'sysnum' => $request->get('sysnum'),
             'theme_id' => $theme_id,
             'fase_id' => $fase_id,
+            'user_id' => auth()->user()->id
         ]);
         $process->save();
         return redirect()->route('processes',compact(['fase_id','theme_id']))->with('success', 'Process created successfully.');
     }
 
     public function show_process($fase_id,$theme_id,$id){
+//         $test = Processes::where('processes.id',$id)->leftJoin('themes','processes.theme_id', '=', 'themes.id')->leftJoin('phases','processes.fase_id', '=', 'phases.id')->select('processes.name as pname','themes.name as tname','phases.name as fname')->get();
+//         dd($test);
+//         dd(Processes::query()->where('id', $id));
         $process = Processes::find($id);
         $parent_fase = Phases::find($fase_id);
         $parent_theme = Themes::find($theme_id);
@@ -84,14 +92,14 @@ class ProcessesController extends Controller
 
     public function dashboard(){
 
-        $recent_processes = Processes::orderBy('updated_at','desc')->limit(3)->get();
+        $recent_processes = Processes::where('active',1)->orderBy('updated_at','desc')->limit(3)->get();
         return view('dashboard.view',compact(['recent_processes']));
     }
 
     public function search(Request $request){
 
         $text = $request->get('search_text');
-        $processes = Processes::all();
+        $processes = Processes::where('active',1)->get();
         $searched_pro_ids = [];
         if($text)
             foreach ($processes as $process)
@@ -113,7 +121,9 @@ class ProcessesController extends Controller
             }
         $searched_process_arr = Processes::whereIn('id',$searched_pro_ids)->get();
         return response()->json($searched_process_arr);
-//        $recent_processes = Processes::orderBy('updated_at','desc')->limit(3)->get();
-//        return view('dashboard.view',compact(['recent_processes','searched_process_arr']));
+    }
+    public function export_excel($fase_id, $theme_id, $id){
+        $process = Processes::find($id);
+        return Excel::download(new ProcessExport($id),'Process.xlsx');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Phases;
+use App\Model\Processes;
 use App\Model\Themes;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class ThemesController extends Controller
 {
     public function show($fase_id)
     {
-        $themes = Themes::where('fase_id',$fase_id)->get();
+        $themes = Themes::where('fase_id',$fase_id)->where('active',1)->get();
         $parent_fase = Phases::find($fase_id);
         return view('themes.view', compact(['themes','fase_id','parent_fase']));
     }
@@ -31,7 +32,8 @@ class ThemesController extends Controller
             'name' => $request->get('name'),
             'description' => $request->get('description'),
             'sysnum' => $request->get('sysnum'),
-            'fase_id' => $fase_id
+            'fase_id' => $fase_id,
+            'user_id' => auth()->user()->id
         ]);
         $theme->save();
         return redirect()->route('themes',['fase_id'=>$fase_id])->with('success','Theme created successfully.');
@@ -60,7 +62,14 @@ class ThemesController extends Controller
     public function destroy($fase_id,$id)
     {
         $theme = Themes::find($id);
-        $theme->delete();
-        return redirect()->route('themes',['fase_id'=>$fase_id])->with('success','Theme deleted successfully.');
+        $theme->active = 0;
+        $theme->save();
+        $children_processes = Processes::where('theme_id',$id)->get();
+        foreach ($children_processes as $cprocess){
+            $cprocess->active = 0;
+            $cprocess->save();
+        }
+//        $theme->delete();
+        return redirect()->route('themes',['fase_id'=>$fase_id])->with('success','Theme(his children) deleted successfully.');
     }
 }

@@ -23,6 +23,7 @@
             <div class="col-12">
                 <input type="hidden" name="status" id="status" value="show">
                 <button type="click" class="btn btn-primary float-right mb-3 "><a href="{{route('process_edit_flowchart',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" class="top-right-btn">Edit Process</a></button>
+                <button type="click" class="btn btn-success float-right mb-3 mr-2 "><a href="{{route('process_export_excel',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" class="top-right-btn">Export Process</a></button>
             </div>
         </div>
 
@@ -85,7 +86,7 @@
                     </div>
                     <div class="log">
                         <ul>
-                            <li><span style="font-weight: bold">User :</span> {{$user_make_changed->name}}</li>
+                            <li><span style="font-weight: bold">User :</span> @if(isset($user_make_changed)){{$user_make_changed->name}}@endif</li>
                             <li><span style="font-weight: bold">Commit :</span> {{$process->commit}}</li>
                             <li><span style="font-weight: bold">Last Update :</span> {{$process->updated_at->format('d-m-Y H:i')}}</li>
                         </ul>
@@ -169,6 +170,11 @@
                 }
             }
         })
+
+        // $('.edit_link').click(function (e) {
+        //     e.preventDefault();
+        //     console.log("ddd")
+        // })
 
     </script>
     @if ($message = Session::get('success'))

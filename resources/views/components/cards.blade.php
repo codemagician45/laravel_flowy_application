@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-8 py-1">
                         {{--Fase--}}
-                        @if($data->user_id)
+                        @if($data->user_id && !$data->fase_id)
                         <a href="{{route('themes',['fase_id' => $data->id])}}" class="text-decoration-none text-body">
                             <div class="card-body">
                                 <h5 class="card-title">{{$data->name}}</h5>
@@ -38,12 +38,12 @@
                         @endif
                     </div>
                     {{--Fase Edit/Delete--}}
-                    @if($data->user_id)
+                    @if($data->user_id && !$data->fase_id)
                     <div class="col-1">
                         <a href="{{route('edit_phase',['id' => $data->id])}}">
                             <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>
                         </a>
-                        <a href="{{route('delete_phase',['id' => $data->id])}}" onclick="return confirm('Are you sure?')">
+                        <a href="{{route('delete_phase',['id' => $data->id])}}" onclick="return confirm('Are you sure you want to delete this Fase (and his children)?')">
                             <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>
                         </a>
                     </div>
@@ -54,7 +54,7 @@
                             <a href="{{route('edit_theme',['fase_id'=>$data->fase_id, 'id' => $data->id])}}">
                                 <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>
                             </a>
-                            <a href="{{route('delete_theme',['fase_id'=>$data->fase_id,'id' => $data->id])}}" onclick="return confirm('Are you sure?')">
+                            <a href="{{route('delete_theme',['fase_id'=>$data->fase_id,'id' => $data->id])}}" onclick="return confirm('Are you sure you want to delete this Theme (and his children)?')">
                                 <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>
                             </a>
                         </div>

@@ -8,6 +8,6 @@ class Themes extends Model
 {
     //
     protected $fillable = [
-        'name','description','sysnum','fase_id','acive'
+        'name','description','sysnum','fase_id','user_id','acive'
     ];
 }

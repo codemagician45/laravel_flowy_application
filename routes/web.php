@@ -53,7 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('fases/{fase_id}/themes/{theme_id}/processes/{id}/store',"ProcessesController@update_process")->name('process_store_flowchart');
 
     Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/edit',"ProcessesController@edit_process")->name('process_edit_flowchart');
-//    Route::post('fases/{fase_id}/themes/{theme_id}/processes/{id}/update',"ProcessesController@update_flow_chart")->name('process_update_flowchart');
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/export_excel',"ProcessesController@export_excel")->name('process_export_excel');
 
     Route::get('/',"ProcessesController@dashboard")->name('dashboard');
     Route::post('/search','ProcessesController@search')->name('search-process');

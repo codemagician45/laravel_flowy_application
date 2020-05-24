@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Model\Phases;
+use App\Model\Processes;
+use App\Model\Themes;
 use App\Models\SchouwportaalGebreken;
 use App\Models\SpinMaatregelen;
 use App\Models\UltimoGebreken;
@@ -13,10 +15,8 @@ class PhasesController extends Controller
 {
     public function show()
     {
-//        $phasesJSON =  '[{"index":"1","title":"Verwervingsfase","description":"Dit zou een beschrijving kunnen zijn van een fase. Maar je wilt geen sterke verhalen gaan ophangen, gewoon lekker kort en krachtig. Daarom zal deze tekst na 2 lijnen afgekort worden.","icon":"lnr-magic-wand","route":"/verwervingsfase"},{"index":"2","title":"Transititefase","description":"Dit zou een beschrijving kunnen zijn van een fase. Maar je wilt geen sterke verhalen gaan ophangen, gewoon lekker kort en krachtig. Daarom zal deze tekst na 2 lijnen afgekort worden.","icon":"lnr-cog","route":"/transitiefase"},{"index":"3","title":"Onderhoudsfase","description":"Dit zou een beschrijving kunnen zijn van een fase. Maar je wilt geen sterke verhalen gaan ophangen, gewoon lekker kort en krachtig. Daarom zal deze tekst na 2 lijnen afgekort worden.","icon":"lnr-picture","route":"/onderhoudsfase"},{"index":"4","title":"Overdracht en nazorg","description":"Dit zou een beschrijving kunnen zijn van een fase. Maar je wilt geen sterke verhalen gaan ophangen, gewoon lekker kort en krachtig. Daarom zal deze tekst na 2 lijnen afgekort worden.","icon":"lnr-apartment","route":"/overdrachtennazorg"}]';
-//        $phases = json_decode($phasesJSON);
-
-        $phases = Phases::where('user_id',auth()->user()->id)->get();
+//        $phases = Phases::where('user_id',auth()->user()->id)->where('active',1)->get();
+        $phases = Phases::where('active',1)->get();
         return view('phases.view', compact("phases"));
     }
 
@@ -64,8 +64,19 @@ class PhasesController extends Controller
     public function destroy($id)
     {
         $phase = Phases::find($id);
-        $phase->delete();
-
-        return redirect()->route('phases')->with('success','Fase deleted successfully');
+//        $phase->delete();
+        $phase->active = 0;
+        $phase->save();
+        $children_themes = Themes::where('fase_id',$id)->get();
+        foreach ($children_themes as $ctheme){
+            $ctheme->active = 0;
+            $ctheme->save();
+        }
+        $children_processes = Processes::where('fase_id',$id)->get();
+        foreach ($children_processes as $cprocess){
+            $cprocess->active = 0;
+            $cprocess->save();
+        }
+        return redirect()->route('phases')->with('success','Fase(his children) deleted successfully');
     }
 }
