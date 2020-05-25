@@ -157,10 +157,11 @@
         if(flowyData1)
             flowyData = JSON.parse(flowyData1);
         $('#flow_import').val(flowyData1);
-
+        console.log(flowyData0,typeof flowyData0);
         var quill = new Quill('#editor', {
             theme: 'snow'
         });
+        console.log(quill)
         delta0 = '<?php echo json_encode($process->long_des)?>';
         delta1 = delta0.slice(1,-1)
         if(delta1){

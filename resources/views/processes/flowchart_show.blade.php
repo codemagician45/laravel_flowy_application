@@ -114,7 +114,7 @@
             quill.setContents(delta);
         }
         quill.enable(false);
-
+        console.log("test")
         flowy(document.getElementById("canvas"));
         var flowyDataJson = $('#flow_import').val();
         if (flowyDataJson) {

@@ -130,6 +130,7 @@
 
 <script>
     $('#search_text').keyup(function () {
+
         var search_text = $(this).val();
             $.ajaxSetup({
                 headers: {
@@ -143,25 +144,35 @@
                     search_text:search_text
                 },
                 success:function (data) {
-                    console.log(data);
                     document.querySelectorAll('.process-search').forEach(function(a){
                         a.remove()
                     })
-                    if(data.length!=0)
+                    if(data.length!=0){
                         for(let i = 0; i < 5; i++){
-                            let url = window.location.href+'fases/'+data[i].fase_id+'/themes/'+data[i].theme_id+'/processes/'+data[i].id+'/show';
-                            let year = data[i].updated_at.slice(0,4);
-                            let month = data[i].updated_at.slice(5,7);
-                            let day = data[i].updated_at.slice(8,10);
-                            let hour = data[i].updated_at.slice(11,13);
-                            let min = data[i].updated_at.slice(14, 16);
-                            let date = day+'-'+month+'-'+year+' '+hour+':'+min;
-                            $('#search-result').append(
-                                '<div class="col-12 process-search"><div class="main-card mb-4 card card-hover-shadow-2x"><div class="row no-gutters overflow-hidden"><div class="col-3 p-4 bg-sunny-morning d-flex align-items-center"> <span class="display-4" style="color: rgba(255,255,255,0.9)">'+ data[i].sysnum +'.</span><div class="card-index__rondje"></div></div><div class="col-9 py-1"><a href="'+url+'" class="text-decoration-none text-body"><div class="card-body"><h5 class="card-title">'+data[i].name+'</h5><p class="pt-max mb-0">'+data[i].description+'</p><p class="pt-max mt-2 float-right">Last updated: '+date+'</p></div></div></div></div></div>'
-                            )
+                            if(data[i])
+                            {
+                                let url = window.location.href+'fases/'+data[i].fase_id+'/themes/'+data[i].theme_id+'/processes/'+data[i].id+'/show';
+                                let year = data[i].updated_at.slice(0,4);
+                                let month = data[i].updated_at.slice(5,7);
+                                let day = data[i].updated_at.slice(8,10);
+                                let hour = data[i].updated_at.slice(11,13);
+                                let min = data[i].updated_at.slice(14, 16);
+                                let date = day+'-'+month+'-'+year+' '+hour+':'+min;
+                                $('#search-result').append(
+                                    '<div class="col-12 process-search"><div class="main-card mb-4 card card-hover-shadow-2x"><div class="row no-gutters overflow-hidden"><div class="col-3 p-4 bg-sunny-morning d-flex align-items-center"> <span class="display-4" style="color: rgba(255,255,255,0.9)">'+ data[i].sysnum +'.</span><div class="card-index__rondje"></div></div><div class="col-9 py-1"><a href="'+url+'" class="text-decoration-none text-body"><div class="card-body"><h5 class="card-title">'+data[i].name+'</h5><p class="pt-max mb-0">'+data[i].description+'</p><p class="pt-max mt-2 float-right">Last updated: '+date+'</p></div></div></div></div></div>'
+                                )
+                            }
                         }
+                    }
+
                 }
             });
+    })
+    $('#search_text').keypress(function (e) {
+        var key = e.which;
+        if(key == 13){
+            return false;
+        }
     })
 
 </script>
