@@ -4,9 +4,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <script src="{{ asset('js/flowy.min.js') }}"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
     <div class="col-12 px-0">
         <div class="row">
             <nav class="col-12" aria-label="breadcrumb">
@@ -26,57 +24,26 @@
                 <button type="click" class="btn btn-success float-right mb-3 mr-2 "><a href="{{route('process_export_excel',['fase_id' =>$fase_id,'theme_id'=>$theme_id,'id'=>$id ])}}" class="top-right-btn">Export Process</a></button>
             </div>
         </div>
-
         <div class="row">
-            <input type="hidden" id="flow_import" name="flow_import" value="">
-            <div class="col-3">
-                <div class="card-shadow-alternate card-border mb-3 card p-2">
-                    <p class="header">Blocks</p>
-                    <div id="blocklist">
-                        <div class="blockelem create-flowy noselect">
-                            <input type="hidden" name="blockelemtype" class="blockelemtype" value="1">
-                            <div class="blockin">
-                                <div class="blocktext">
-                                    <p class="blocktitle">New visitor</p>
-                                    <p class="blockdesc">Triggers when somebody visits a specified page</p>
-                                    <input type="hidden" class="assigned_user" value="">
-                                    <input type="hidden" class="url" value="">
-                                    <input type="hidden" class="process" value="">
+            <div class="col-12" >
+                <div class="card-shadow-alternate card-border mb-3 card  ">
+                    <div class="role-panel form-group">
+                        <p class="process-role-block">Process Roles</p>
+                        @if($role_arr && $role_arr[0])
+                            @foreach($role_arr as $role)
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input role-select" id="{{$role->role_name}}">
+                                    <input type="hidden" id="role-id" value="{{$role->id}}">
+                                    <input type="hidden" id="role-color" value="{{$role->color}}">
+                                    <label class="custom-control-label" for="{{$role->role_name}}">{{$role->role_name}}</label>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="blockelem create-flowy noselect">
-                            <input type="hidden" name="blockelemtype" class="blockelemtype" value="1">
-                            <div class="blockin">
-                                <div class="blocktext">
-                                    <p class="blocktitle">New visitor</p>
-                                    <p class="blockdesc">Triggers when somebody visits a specified page</p>
-                                    <input type="hidden" class="assigned_user" value="">
-                                    <input type="hidden" class="url" value="">
-                                    <input type="hidden" class="process" value="">
-                                </div>
-                            </div>
-                        </div>
+                            @endforeach
+                        @endif
+                    </div>
+                    <div id="canvas">
                     </div>
                 </div>
             </div>
-            <div class="col-9" >
-                <div class="role-panel form-group">
-                    <p class="process-role-block">Process Roles</p>
-                    @foreach($role_arr as $role)
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input role-select" id="{{$role->role_name}}">
-                            <input type="hidden" id="role-id" value="{{$role->id}}">
-                            <input type="hidden" id="role-color" value="{{$role->color}}">
-                            <label class="custom-control-label" for="{{$role->role_name}}">{{$role->role_name}}</label>
-                        </div>
-                    @endforeach
-                </div>
-                <div id="canvas" style="background: white;">
-
-                </div>
-            </div>
-
         </div>
         <div class="row">
             <div class="col-12">
@@ -96,85 +63,97 @@
             </div>
         </div>
     </div>
+    <script src="https://unpkg.com/bpmn-js@6.5.1/dist/bpmn-navigated-viewer.development.js"></script>
+    <script src="{{asset('js/diagram-show.js')}}"></script>
     <script>
-        var flowyData0,flowyData1, flowyData,delta0,delta1,delta;
+
+        var flowyData0,flowyData1, flowyData,delta0,delta1,delta, flowyInfo0, flowyInfo1,flowyInfo;
+
         flowyData0 = '<?php echo json_encode($process->flowchart);?>';
-        flowyData1 = flowyData0.slice(1, -1);
-        if(flowyData1)
-            flowyData = JSON.parse(flowyData1);
-        $('#flow_import').val(flowyData1);
+        flowyData = flowyData0.slice(1, -1);
+        if(flowyData0 != 'null')
+            openDiagram(flowyData)
+
+        flowyInfo0 = '<?php echo json_encode($process->block_data)?>';
+        flowyInfo1 = flowyInfo0.slice(1,-1);
+        if(flowyInfo0 != 'null')
+            flowyInfo = JSON.parse(flowyInfo1)
 
         var quill = new Quill('#editor', {
             theme: 'snow'
         });
         delta0 = '<?php echo json_encode($process->long_des)?>';
         delta1 = delta0.slice(1,-1)
-        if(delta1){
+        if(delta0 != 'null'){
             delta = JSON.parse(delta1);
             quill.setContents(delta);
         }
         quill.enable(false);
-        console.log("test")
-        flowy(document.getElementById("canvas"));
-        var flowyDataJson = $('#flow_import').val();
-        if (flowyDataJson) {
-            var flowyData = JSON.parse(flowyDataJson);
 
-            flowy.import(flowyData);
-        }
-        $('#canvas').on('mousedown', function (e) {
-            e.preventDefault();
-            return false;
-        })
-        $('#blocklist').on('mousedown', function (e) {
-            e.preventDefault();
-            return false;
-        })
-
-        $('.blockelem').click(function () {
-            let selectedUrl = this.children[1].children[0].children[3].value;
-            let selectedProcess = this.children[1].children[0].children[4].value;
-            if(selectedUrl){
-                if(selectedUrl.includes('http'))
-                    window.open(selectedUrl,'_blank');
-                else
-                    window.open('https://'+selectedUrl, '_blank');
-            }
-
-            if(selectedProcess){
-                let currentUrl = window.location.href;
-                window.open(currentUrl.substring(0,currentUrl.indexOf('/show')-1)+selectedProcess+'/show', '_blank');
-            }
-
-        })
-
-        var roleId, roleColor,thisRole, thisColor;
-        var blocks = $('#canvas').find('.blockelem');
-        $('.role-select').change(function () {
-            if($(this).prop('checked')) {
-                roleId = this.parentNode.children[1].value;
-                roleColor = this.parentNode.children[2].value;
-                for(let i=0; i<blocks.length;i++){
-                    thisRole = blocks[i].children[1].children[0].children[5].value;
-                    if(thisRole == roleId)
-                        blocks[i].style.background = roleColor
-                }
-            }
-            else{
-                roleId = this.parentNode.children[1].value;
-                roleColor = this.parentNode.children[2].value;
-                for(let i=0; i<blocks.length;i++){
-                    thisRole = blocks[i].children[1].children[0].children[5].value;
-                    if(thisRole == roleId)
-                        blocks[i].style.background = ''
-                }
-            }
-        })
-
-        // $('.edit_link').click(function (e) {
+        // $('#canvas').on('mousedown', function (e) {
         //     e.preventDefault();
-        //     console.log("ddd")
+        //     return false;
         // })
+        $(document).ready(function () {
+            $('.djs-shape').click(function () {
+                let thisId = this.dataset.elementId;
+                let thisBlock = flowyInfo.filter(data => {
+                    return data.id == thisId
+                })
+                let selectedUrl = thisBlock[0].url;
+                let selectedProcess = thisBlock[0].process;
+                console.log(selectedUrl,selectedProcess);
+                if(selectedUrl){
+                    if(selectedUrl.includes('http'))
+                        window.open(selectedUrl,'_blank');
+                    else
+                        window.open('https://'+selectedUrl, '_blank');
+                }
+
+                if(selectedProcess != 0 && selectedProcess){
+                    let currentUrl = window.location.href;
+                    window.open(currentUrl.substring(0,currentUrl.indexOf('/show')-1)+selectedProcess+'/show', '_blank');
+                }
+
+            })
+
+            var roleId, roleColor,blocks;
+            blocks = $('body').find('.djs-shape');
+            $('.role-select').change(function () {
+                if($(this).prop('checked')) {
+                    roleId = this.parentNode.children[1].value;
+                    roleColor = this.parentNode.children[2].value;
+                    for(let i = 0; i < blocks.length; i++){
+                        let thisId = blocks[i].dataset.elementId;
+                        let thisBlock = flowyInfo.filter(data => {
+                            return data.id == thisId
+                        })
+                        if(thisBlock.length != 0){
+                            let thisRole = thisBlock[0].role;
+                            if(roleId == thisRole){
+                                blocks[i].style.outline = 'solid '+ roleColor
+                            }
+                        }
+                    }
+                }
+                else{
+                    roleId = this.parentNode.children[1].value;
+                    roleColor = this.parentNode.children[2].value;
+                    for(let i = 0; i < blocks.length; i++){
+                        let thisId = blocks[i].dataset.elementId;
+                        let thisBlock = flowyInfo.filter(data => {
+                            return data.id == thisId
+                        })
+                        if(thisBlock.length != 0){
+                            let thisRole = thisBlock[0].role;
+                            if(roleId == thisRole){
+                                blocks[i].style.outline = ''
+                            }
+                        }
+                    }
+                }
+            })
+        })
 
     </script>
     @if ($message = Session::get('success'))

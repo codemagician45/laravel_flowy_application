@@ -59,7 +59,16 @@
                             </a>
                         </div>
                     @endif
-
+                    @if($data->theme_id && $data->fase_id)
+                        <div class="col-1">
+                            <a href="{{route('edit_process',['fase_id' => $data->fase_id,'theme_id' => $data->theme_id,'id'=>$data->id])}}">
+                                <i class="metismenu-icon pe-7s-eyedropper pt-3 pl-1 font-size-xlg"></i>
+                            </a>
+                            <a href="{{route('delete_process',['fase_id' => $data->fase_id,'theme_id' => $data->theme_id,'id'=>$data->id])}}" onclick="return confirm('Are you sure you want to delete this Process?')">
+                                <i class="metismenu-icon pe-7s-trash pt-3 pr-1  font-size-xlg"></i>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

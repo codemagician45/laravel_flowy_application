@@ -15,7 +15,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-{{--        <script src="sweetalert2.min.js"></script>--}}
         <script src="{{ asset('js/app.js') }}?v={{Cache::get('JsCssVersion', '1')}}" defer></script>
 
 
@@ -23,10 +22,11 @@
 
         <!-- CSS -->
         <link href="{{ asset('css/base.css') }}?v={{Cache::get('JsCssVersion', '1')}}" rel="stylesheet">
-        <link href="{{ asset('css/flowy.min.css') }}" rel='stylesheet' type='text/css'>
-        <link href="{{ asset('css/flowchart.css') }}" rel='stylesheet' type='text/css'>
+        <link href="{{ asset('css/diagram.css') }}" rel='stylesheet' type='text/css'>
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-{{--        <link rel="stylesheet" href="sweetalert2.min.css">--}}
+        <!-- required modeler styles -->
+        <link rel="stylesheet" href="https://unpkg.com/bpmn-js@6.5.1/dist/assets/diagram-js.css">
+        <link rel="stylesheet" href="https://unpkg.com/bpmn-js@6.5.1/dist/assets/bpmn-font/css/bpmn.css">
 
     </head>
     <body>
@@ -122,32 +122,6 @@
                                 <a href="{{ route('dashboard') }}">
                                     <i class="metismenu-icon pe-7s-drawer"></i>Dashboard
                                 </a>
-{{--                                <ul class="mm-collapse mm-show" style="">--}}
-{{--                                    <li>--}}
-{{--                                        <a href="dropdowns.html">--}}
-{{--                                            <i class="metismenu-icon">--}}
-{{--                                            </i>1. Verwervingsfase--}}
-{{--                                        </a>--}}
-{{--                                    </li>--}}
-{{--                                    <li>--}}
-{{--                                        <a href="icons.html">--}}
-{{--                                            <i class="metismenu-icon">--}}
-{{--                                            </i>2. Transitiefase--}}
-{{--                                        </a>--}}
-{{--                                    </li>--}}
-{{--                                    <li>--}}
-{{--                                        <a href="badges-labels.html">--}}
-{{--                                            <i class="metismenu-icon">--}}
-{{--                                            </i>3. Onderhoudsfase--}}
-{{--                                        </a>--}}
-{{--                                    </li>--}}
-{{--                                    <li>--}}
-{{--                                        <a href="cards.html">--}}
-{{--                                            <i class="metismenu-icon">--}}
-{{--                                            </i>4. Overdracht en Nazorg--}}
-{{--                                        </a>--}}
-{{--                                    </li>--}}
-{{--                                </ul>--}}
                             </li>
                         </ul>
                     </div>

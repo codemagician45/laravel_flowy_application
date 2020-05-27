@@ -3,8 +3,6 @@
 @section('title', 'Dashboard',['vue' => true])
 
 @section('content')
-    <script src="{{ asset('js/flowy.min.js') }}"></script>
-    <script src="{{ asset('js/flowchart.js') }}"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
     <div class="col-12 px-0">
@@ -27,7 +25,7 @@
                     <input type="hidden" name="block_data" id="block_data" value="">
                     <input type="hidden" name="role_data" id="role_data" value="">
                     <input type="hidden" name="change-commit" id="change-commit" value="">
-                    <button type="button" class="btn btn-danger float-right ml-2" id="clearblock">Clear</button>
+{{--                    <button type="button" class="btn btn-danger float-right ml-2" id="clearblock">Clear</button>--}}
                     <button type="submit" class="btn btn-primary float-right mb-3">Save</button>
                 </form>
 
@@ -36,42 +34,10 @@
         </div>
 
         <div class="row">
-            <input type="hidden" id="flow_import" name="flow_import" value="">
-            <div class="col-3">
-                <div class="card-shadow-alternate card-border mb-3 card p-2">
-                    <p class="header">Blocks</p>
-                    <div id="blocklist">
-                        <div class="blockelem create-flowy noselect">
-                            <input type="hidden" name="blockelemtype" class="blockelemtype" value="1">
-                            <div class="blockin">
-                                <div class="blocktext">
-                                    <p class="blocktitle">New visitor</p>
-                                    <p class="blockdesc">Triggers when somebody visits a specified page</p>
-                                    <input type="hidden" class="assigned_user" value="">
-                                    <input type="hidden" class="url" value="">
-                                    <input type="hidden" class="process" value="">
-                                    <input type="hidden" class="role" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="blockelem create-flowy noselect">
-                            <input type="hidden" name="blockelemtype" class="blockelemtype" value="1">
-                            <div class="blockin">
-                                <div class="blocktext">
-                                    <p class="blocktitle">New visitor</p>
-                                    <p class="blockdesc">Triggers when somebody visits a specified page</p>
-                                    <input type="hidden" class="assigned_user" value="">
-                                    <input type="hidden" class="url" value="">
-                                    <input type="hidden" class="process" value="">
-                                    <input type="hidden" class="role" value="">
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-12" >
+                <div class="card-shadow-alternate card-border mb-3 card  ">
+                    <div id="canvas">
                     </div>
-                </div>
-            </div>
-            <div class="col-9" >
-                <div id="canvas" style="background: white;">
                 </div>
             </div>
 
@@ -82,10 +48,13 @@
                     </div>
                     <p id="header2">Properties</p>
                     <div id="divisionthing"></div>
-
+{{--                        <div class="form-group mr-4 mt-4">--}}
+{{--                            <label for="name">Name</label>--}}
+{{--                            <input type="text" class="form-control" id="name" name="name">--}}
+{{--                        </div>--}}
                         <div class="form-group mr-4 mt-4">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <label for="description">Description</label>
+                            <textarea type="text" class="form-control" id="description" name="description"></textarea>
                         </div>
                         <div class="form-group mr-4">
                             <label for="assigned_user">Assigned User</label>
@@ -95,11 +64,6 @@
                                     <option value="{{$user->id}}">{{$user->name}}</option>
                                 @endforeach
                             </select>
-                        </div>
-
-                        <div class="form-group mr-4">
-                            <label for="description">Description</label>
-                            <textarea type="text" class="form-control" id="description" name="description"></textarea>
                         </div>
                         <div class="form-group mr-4">
                             <label for="url">Url</label>
@@ -149,53 +113,93 @@
             <button type="button" class="btn btn-success float-right" id="commit" name="commit">Commit</button>
         </div>
     </div>
-
+    <!-- modeler distro -->
+    <script src="https://unpkg.com/bpmn-js@6.5.1/dist/bpmn-modeler.development.js"></script>
+    <script src="{{ asset('js/diagram-edit.js') }}"></script>
     <script>
-        var flowyData0,flowyData1, flowyData;
+        var flowyData0, flowyData,flowyInfo0,flowyInfo,delta0, delta1,delta;
         flowyData0 = '<?php echo json_encode($process->flowchart);?>';
-        flowyData1 = flowyData0.slice(1, -1);
-        if(flowyData1)
-            flowyData = JSON.parse(flowyData1);
-        $('#flow_import').val(flowyData1);
-        console.log(flowyData0,typeof flowyData0);
+        flowyData = flowyData0.slice(1, -1);
+        if(flowyData0 != 'null')
+            openDiagram(flowyData)
+
+        flowyInfo0 = '<?php echo $process->block_data?>';
+        $('#block_data').val(flowyInfo0)
+
         var quill = new Quill('#editor', {
             theme: 'snow'
         });
-        console.log(quill)
+
         delta0 = '<?php echo json_encode($process->long_des)?>';
         delta1 = delta0.slice(1,-1)
-        if(delta1){
+        if(delta0!='null'){
             delta = JSON.parse(delta1);
             quill.setContents(delta);
         }
 
         $('#process_update').submit(function (e) {
             e.preventDefault();
-            $('#flowchart_data').val(JSON.stringify(flowy.output()))
+            exportDiagram();
             var delta = quill.getContents();
             $('#long_des').val(JSON.stringify(delta));
 
-            var nameElements  = $('#canvas').find('.blocktitle')
-            var nameArr = [];
-            for(let i=0; i<nameElements.length;i++){
-                nameArr.push(nameElements[i].textContent);
-            }
-            var desElements = $('#canvas').find('.blockdesc');
-            var desArr = [];
-            for(let j=0;j<desElements.length;j++) {
-                desArr.push(desElements[j].textContent)
-            }
-            var blockData = {
-                'name':nameArr,
-                'des': desArr
-            }
-            $('#block_data').val(JSON.stringify(blockData))
+            var blocks = $('#canvas').find('.djs-visual');
+            if(blockData.length != 0)
+                for (let i = 0; i <  blocks.length; i++)
+                {
+                    let thisId = blocks[i].parentNode.getAttribute('data-element-id');
+                    let thisName;
+                    if(blocks[i].getElementsByTagName('tspan').length!=0)
+                        thisName = blocks[i].getElementsByTagName('tspan')[0].textContent
+                    let thisActiveBlock = blockData.filter(data => {
+                        return data.id == thisId
+                    })
+                    if(thisActiveBlock.length == 1)
+                        thisActiveBlock[0].name = thisName;
+                    let thisExtraBlock = blockData.filter(data=> {
+                        return data.id + '_label' == thisId
+                    })
+                    if(thisExtraBlock.length == 1)
+                        thisExtraBlock[0].name = thisName
+                }
+            else
+                for (let i = 0; i <  blocks.length; i++)
+                {
+                    let thisId = blocks[i].parentNode.getAttribute('data-element-id');
+                    let thisName;
+                    if(blocks[i].getElementsByTagName('tspan').length!=0)
+                        thisName = blocks[i].getElementsByTagName('tspan')[0].textContent;
+                    if(!thisName){
+                        console.log("undefined")
+                        continue;
+                    }
+                    else{
+                        if(thisId.includes('_label')){
+                            console.log('label')
+                            blockData.push({
+                                id:thisId.substring(0, thisId.lastIndexOf("_label")),
+                                name:thisName,
+                                des:""
+                            })
+                        }
+                        else{
+                            console.log('default')
+                            blockData.push({
+                                id:thisId,
+                                name:thisName,
+                                des:""
+                            })
+                        }
+                    }
+                }
+            console.log(blockData)
 
-            var roleElements = $('#canvas').find('.role');
+            $('#block_data').val(JSON.stringify(blockData));
             var roleArr = [];
-            for(let k=0; k<roleElements.length;k++){
-                if(roleElements[k].value != 0 && roleElements[k].value != '' && !roleArr.includes(roleElements[k].value))
-                    roleArr.push(roleElements[k].value);
+            for(let k=0; k<blockData.length;k++){
+
+                if(blockData[k].role != 0 && blockData[k].role != '' && !roleArr.includes(blockData[k].role))
+                    roleArr.push(blockData[k].role);
             }
             $('#role_data').val(JSON.stringify(roleArr));
 
@@ -210,6 +214,7 @@
             $('#change-commit').val($('#change-commit-des').val());
             $("#process_update")[0].submit();
         })
+
     </script>
 
 @endsection

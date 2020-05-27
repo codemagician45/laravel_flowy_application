@@ -28,6 +28,34 @@ class ProcessesController extends Controller
         $parent_theme = Themes::find($theme_id);
         return view('processes.create', compact(['fase_id','theme_id','parent_fase','parent_theme']));
     }
+    public function edit($fase_id,$theme_id,$id){
+        $process = Processes::find($id);
+        $parent_fase = Phases::find($fase_id);
+        $parent_theme = Themes::find($theme_id);
+        return view('processes.edit', compact(['fase_id','theme_id','id','parent_fase','parent_theme','process']));
+    }
+    public function update($fase_id,$theme_id,$id, Request $request){
+        $request->validate(['name' => 'required',
+                'description' => 'required',
+                'sysnum' => 'required']
+        );
+        $process = Processes::find($id);
+        $process->name = $request->get('name');
+        $process->description = $request->get('description');
+        $process->sysnum = $request->get('sysnum');
+        $process->save();
+
+        return redirect()->route('processes',['fase_id'=>$fase_id,'theme_id'=>$theme_id])->with('success','Process updated successfully.');
+    }
+
+    public function destroy($fase_id, $theme_id, $id){
+
+        $process = Processes::find($id);
+        $process->active = 0;
+        $process->save();
+        return redirect()->route('processes',['fase_id'=>$fase_id,'theme_id'=>$theme_id])->with('success','Process deleted successfully.');
+    }
+
     public function store($fase_id,$theme_id, Request $request)
     {
         $request->validate([
@@ -49,9 +77,7 @@ class ProcessesController extends Controller
     }
 
     public function show_process($fase_id,$theme_id,$id){
-//         $test = Processes::where('processes.id',$id)->leftJoin('themes','processes.theme_id', '=', 'themes.id')->leftJoin('phases','processes.fase_id', '=', 'phases.id')->select('processes.name as pname','themes.name as tname','phases.name as fname')->get();
-//         dd($test);
-//         dd(Processes::query()->where('id', $id));
+
         $process = Processes::find($id);
         $parent_fase = Phases::find($fase_id);
         $parent_theme = Themes::find($theme_id);
@@ -106,14 +132,15 @@ class ProcessesController extends Controller
             {
                 $process_block = json_decode($process->block_data);
                 if($process_block != ''){
-                    $block_count = count($process_block->name);
+                    $block_count = count($process_block);
                     $search_result = false;
                     for($i = 0; $i < $block_count; $i++)
                     {
-                        if(strpos(strtolower($process_block->name[$i]), strtolower($text)) !== false || strpos(strtolower($process_block->des[$i]), strtolower($text)) !== false){
-                            $search_result = true;
-                            break;
-                        }
+                        if(isset($process_block[$i]->name))
+                            if(strpos(strtolower($process_block[$i]->name), strtolower($text)) !== false || strpos(strtolower($process_block[$i]->des), strtolower($text)) !== false){
+                                $search_result = true;
+                                break;
+                            }
                     }
                     if($search_result == true)
                         array_push($searched_pro_ids,$process->id);

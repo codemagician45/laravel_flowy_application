@@ -47,10 +47,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('fases/{fase_id}/themes/{theme_id}/processes',"ProcessesController@show")->name('processes');
 
     Route::get('fases/{fase_id}/themes/{theme_id}/processes/create',"ProcessesController@create")->name('create_process');
-    Route::post('fases/{fase_id}/themes/{theme_id}/processes/store',"ProcessesController@store")->name('save_process');
+    Route::post('fases/{fase_id}/themes/{theme_id}/processes/save',"ProcessesController@store")->name('save_process');
+
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/edit/{id}',"ProcessesController@edit")->name('edit_process');
+    Route::post('fases/{fase_id}/themes/{theme_id}/processes/update/{id}',"ProcessesController@update")->name('update_process');
+    Route::get('fases/{fase_id}/themes/{theme_id}/processes/delete/{id}',"ProcessesController@destroy")->name('delete_process');
 
     Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/show',"ProcessesController@show_process")->name('process_show_flowchart');
-    Route::post('fases/{fase_id}/themes/{theme_id}/processes/{id}/store',"ProcessesController@update_process")->name('process_store_flowchart');
+    Route::post('fases/{fase_id}/themes/{theme_id}/processes/{id}/update',"ProcessesController@update_process")->name('process_store_flowchart');
 
     Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/edit',"ProcessesController@edit_process")->name('process_edit_flowchart');
     Route::get('fases/{fase_id}/themes/{theme_id}/processes/{id}/export_excel',"ProcessesController@export_excel")->name('process_export_excel');
