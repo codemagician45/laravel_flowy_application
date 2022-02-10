@@ -67,7 +67,7 @@
         "mapbox-gl": "^1.9.1",
         "metismenu": "^3.0.3",
         "moment": "^2.23.0",
-        "node-sass": "^4.13.1",
+        "node-sass": "^7.0.0",
         "nouislider": "^12.1.0",
         "pe7-icon": "^1.0.4",
         "perfect-scrollbar": "^1.4.0",
